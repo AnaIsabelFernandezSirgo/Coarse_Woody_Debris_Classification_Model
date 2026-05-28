@@ -12,13 +12,10 @@ import pandas as pd
 
 from sklearn.linear_model import LogisticRegression
 
-data_df=pd.read_excel(r'D:/filed_work_class/CWD_Results_new.xlsx')
+data_df = pd.read_excel("CWD_dataset.xlsx")
 
 npdata=data_df.to_numpy()
 [numrows,numcols]=np.shape(npdata)
-
-# Select a subset of the columns to focus on features that we think will be the best predictors of storing sediment
-# You can open the excel file or look at the output from "data.describe()" shown above to see what the different columns correspond to
 
 
 # Basin response data
@@ -37,17 +34,11 @@ len_no=int(nu_no/kfold)
 len_yes=int(nu_yes/kfold)
 feature_list = data_df.columns.tolist()
 
-feature_combos_names = {
-   
-     "set3":['CWDlength', 'phi', 'FractionGroundContact', 'IsModerate']
-}
+feature_combos_names = ['CWDlength', 'phi', 'FractionGroundContact', 'IsModerate']
 
 number_permutation=10
-count=0
-# Store all model performance results
-model_performance = []
-permuation_feature_imp = []
-all_importances = []
+
+
 features_used = []
 
 
@@ -76,10 +67,16 @@ yes_total=np.sum(re)
 
 
 print('Model CWD')
+print('Features: CWDlength, phi, FractionGroundContact, IsModerate')
 model_CWD = LogisticRegression(penalty="l2", C=.3,solver="lbfgs",max_iter=500, class_weight={0:1, 1:np.sqrt((no_total)/(yes_total))},fit_intercept=True)
 CWD_s=model_CWD.fit(CWD_data, CWD_response)
-CWD_beta0=print(CWD_s.intercept_)
-CWD_beta2=print( CWD_s.coef_)
+print(f"\u03B2\u2080 = {CWD_s.intercept_[0]}")
+CWD_betas = CWD_s.coef_.ravel()
+
+print(f"\u03B2\u2081 = {CWD_betas[0]}")
+print(f"\u03B2\u2082 = {CWD_betas[1]}")
+print(f"\u03B2\u2083 = {CWD_betas[2]}")
+print(f"\u03B2\u2084 = {CWD_betas[3]}")
 
 
 

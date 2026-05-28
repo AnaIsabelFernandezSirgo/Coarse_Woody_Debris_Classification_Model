@@ -15,14 +15,14 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.inspection import partial_dependence
 import matplotlib.pyplot as plt
 import shap
-data_df=pd.read_excel(r'D:/filed_work_class/CWD_Results_new.xlsx')
+data_df = pd.read_excel("CWD_dataset.xlsx")
 
 npdata=data_df.to_numpy()
 [numrows,numcols]=np.shape(npdata)
 
 
 
-# Basin response data
+
 res=npdata[:,10]              # volume estimated from h and d pairs
 res[res>=0.006]=1                    # 1==sediment stored, 0=no sediment stored
 res[res<0.006]=0

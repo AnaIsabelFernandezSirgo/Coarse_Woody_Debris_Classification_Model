@@ -12,14 +12,12 @@ import sklearn
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from itertools import combinations
-#from sklearn.metrics import plot_confusion_matrix
 
-data_df=pd.read_excel(r"D:/CWD/CWD_dataset.xlsx")
+
+data_df = pd.read_excel("CWD_dataset.xlsx")
 npdata=data_df.to_numpy()
 [numrows,numcols]=np.shape(npdata)
 
-# Select a subset of the columns to focus on features that we think will be the best predictors of storing sediment
-# You can open the excel file or look at the output from "data.describe()" shown above to see what the different columns correspond to
 
 
 # Basin response data
@@ -30,7 +28,7 @@ data=npdata
 
 nu_yes=np.sum(data[:,10])
 nu_total=len(data[:,10])
-nu_no=nu_total-nu_yes                 # 1==sediment stored, 0=no sediment stored
+nu_no=nu_total-nu_yes                 
 
 
 
@@ -67,7 +65,7 @@ with pd.ExcelWriter("All_Models.xlsx") as w:
             data_subset=np.column_stack((data_subset, data[:,10]))
             idx = np.argsort(data_subset[:, r])   
             data_sorted = data_subset[idx]
-            data_0 = data_subset[data_subset[:, r] == 0]   # all rows where col 39 == 0
+            data_0 = data_subset[data_subset[:, r] == 0]   
             data_1 = data_subset[data_subset[:, r] == 1] 
             np.random.seed(13)   
     
@@ -75,7 +73,7 @@ with pd.ExcelWriter("All_Models.xlsx") as w:
             XY_yes = data_1[np.random.permutation(data_1.shape[0])]
     
         
-            col_avg=np.empty((number_permutation,12))
+            results_avg=np.empty((number_permutation,12))
             for p in range (0,number_permutation):
                 np.random.seed(13+p*3)
                 results = np.empty((kfold,12))
@@ -124,9 +122,9 @@ with pd.ExcelWriter("All_Models.xlsx") as w:
                     
                     results[k,:]=([accuracy,tp,tn,fp,fn,TS,precision,recall,f1score,sensitivity,specificity,falseposrate])
                 
-                col_avg[k,:] = np.mean(results, axis=0)
-            col_avg2=np.mean(col_avg, axis=0)
-            final_row = [feature_names] + col_avg2.tolist()
+                results_avg[k,:] = np.mean(results, axis=0)
+            results_avg2=np.mean(results_avg, axis=0)
+            final_row = [feature_names] + results_avg2.tolist()
             results_final.append(final_row)
                 
         results_pd= pd.DataFrame(results_final)           
