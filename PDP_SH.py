@@ -98,7 +98,7 @@ plt.show()
 
 plt.plot(df2_C[1,:], df2_C[0,:], color='black', linewidth=3.0)
 
-plt.xlabel(feature_combos_names[1],fontsize=18)
+plt.xlabel(r'$\phi$',fontsize=18)
 plt.ylabel("Partial Dependence",fontsize=18)
 plt.rc('xtick', labelsize=14)    # fontsize of the tick labels
 plt.rc('ytick', labelsize=14)    # fontsize of the tick labels

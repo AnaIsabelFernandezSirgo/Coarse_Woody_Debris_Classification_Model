@@ -20,7 +20,7 @@ npdata=data_df.to_numpy()
 
 
 
-# Basin response data
+
 res=npdata[:,10]              # volume estimated from h and d pairs
 res[res>=0.006]=1                    # 1==sediment stored, 0=no sediment stored
 res[res<0.006]=0
